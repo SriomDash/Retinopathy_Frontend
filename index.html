@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetinaScan — Diabetic Retinopathy & Diabetes Prediction Portal</title>
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="stylesheet" href="css/eye.css" />
+  <link rel="stylesheet" href="css/symptoms.css" />
+  <link rel="stylesheet" href="css/predict.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<nav id="main-nav" style="display:none">
+  <a class="nav-logo" href="#">
+    <span class="logo-dot"></span>
+    RetinaScan<span style="color:var(--text-dim)">_AI</span>
+  </a>
+
+  <ul class="nav-links">
+    <li>
+      <a href="#" data-page="eye">
+        <span class="step-num">1</span>
+        Eye Scan
+      </a>
+    </li>
+    <li>
+      <a href="#" data-page="symptoms">
+        <span class="step-num">2</span>
+        Symptoms
+      </a>
+    </li>
+    <li>
+      <a href="#" data-page="predict">
+        <span class="step-num">3</span>
+        Clinical Data
+      </a>
+    </li>
+  </ul>
+
+  <div class="nav-user">
+    <span class="badge" id="nav-doctor-name">—</span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 0 — LOGIN
+════════════════════════════════════════════ -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-card">
+
+      <div class="login-brand">
+        <div class="login-icon">👁️</div>
+        <div class="login-title">RetinaScan AI</div>
+        <div class="login-subtitle">Diabetic Retinopathy Diagnostic Portal</div>
+      </div>
+
+      <form id="login-form" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="doctor-name">Doctor Name</label>
+          <input
+            class="form-input"
+            type="text"
+            id="doctor-name"
+            placeholder="e.g. Dr. Sharma"
+            autocomplete="off"
+          />
+          <div class="form-error" id="name-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="doctor-pass">Password</label>
+          <input
+            class="form-input"
+            type="password"
+            id="doctor-pass"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <div class="form-error" id="pass-error"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-login" id="login-btn">
+          <span id="login-btn-text">→ Access Portal</span>
+        </button>
+      </form>
+
+      <div class="hint-box">
+        Default password for all accounts is <span style="color:var(--teal)">123</span>. Enter any doctor name to proceed.
+      </div>
+
+      <div class="login-footer">
+        <span>RetinaScan v2.1</span> &nbsp;·&nbsp; Anthropic-Powered Diagnostics
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 1 — EYE SCAN
+════════════════════════════════════════════ -->
+<div class="page" id="page-eye">
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-tag">Step 01 / Retinal Imaging</div>
+      <h1 class="page-title">Retinopathy<br /><span>Detection</span></h1>
+      <p class="page-desc">
+        Upload a fundus photograph for AI-assisted diabetic retinopathy grading using ensemble deep learning.
+      </p>
+    </div>
+
+    <!-- Upload Zone -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="eye-file" accept="image/*" />
+        <div class="upload-icon">🔬</div>
+        <div class="upload-title">Drop Fundus Image Here</div>
+        <div class="upload-subtitle">or click to browse files</div>
+        <div class="upload-constraints">
+          <span class="constraint-chip">PNG / JPG / WEBP</span>
+          <span class="constraint-chip">Max 10 MB</span>
+          <span class="constraint-chip">Min 224×224 px</span>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-panel" id="preview-panel">
+        <div class="preview-image-wrap">
+          <img id="preview-img" src="" alt="Fundus preview" />
+          <div class="preview-overlay" id="preview-name">—</div>
+        </div>
+        <div class="preview-meta">
+          <div>
+            <div class="page-tag" style="margin-bottom:8px">File Info</div>
+            <div class="data-row">
+              <span class="data-label">Filename</span>
+              <span class="data-value" id="preview-name-2" style="font-size:12px">—</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Size</span>
+              <span class="data-value" id="preview-size">—</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Models</span>
+              <span class="data-value" style="font-size:11px">Ensemble (2 CNNs)</span>
+            </div>
+          </div>
+          <div class="model-tags">
+            <span class="model-tag">Detection Model</span>
+            <span class="model-tag">New Model</span>
+            <span class="model-tag">Split-Predict</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:auto;padding-top:16px">
+            <button class="btn btn-primary" id="analyze-btn">
+              ⚡ Analyze Image
+            </button>
+            <button class="btn btn-ghost" id="change-img-btn">
+              Change
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="eye-loader">
+      <div class="loader-ring"></div>
+      <div class="loader-text">Running inference...</div>
+    </div>
+
+    <!-- Result -->
+    <div class="card eye-result" id="eye-result">
+      <div class="page-tag" style="margin-bottom:16px">Diagnostic Result</div>
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div>
+          <span id="result-badge" class="result-badge badge-negative">—</span>
+          <div id="result-level-text" class="retinopathy-level">—</div>
+          <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em">
+            Retinopathy Grade
+          </div>
+        </div>
+        <div class="confidence-display">
+          <div class="conf-ring" id="conf-ring"></div>
+          <div>
+            <div style="font-size:13px;color:var(--text-primary);font-weight:700" id="conf-label">—%</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px" id="conf-model-info">Ensemble</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Severity scale -->
+      <div style="margin:20px 0 8px">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">
+          Severity Scale
+        </div>
+        <div class="severity-scale">
+          <div class="severity-pip"></div>
+          <div class="severity-pip"></div>
+          <div class="severity-pip"></div>
+          <div class="severity-pip"></div>
+          <div class="severity-pip"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.05em">
+          <span>No DR</span><span>Mild</span><span>Moderate</span><span>Severe</span><span>Prolif.</span>
+        </div>
+      </div>
+
+      <p class="level-description" id="result-description">—</p>
+
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim)">
+        ⚠ This result is AI-assisted. Clinical judgment by a qualified ophthalmologist is required for diagnosis.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 2 — SYMPTOMS
+════════════════════════════════════════════ -->
+<div class="page" id="page-symptoms">
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-tag">Step 02 / Symptom Analysis</div>
+      <h1 class="page-title">Symptom-Based<br /><span>Prediction</span></h1>
+      <p class="page-desc">
+        Toggle the patient's reported symptoms. The model evaluates 16 clinical indicators to estimate diabetes likelihood.
+      </p>
+    </div>
+
+    <!-- Special inputs -->
+    <div class="special-inputs">
+      <div class="input-group">
+        <label>Patient Age</label>
+        <input class="number-input" type="number" id="sym-age" min="1" max="120" value="40" />
+      </div>
+      <div class="input-group">
+        <label>Gender</label>
+        <div class="gender-select">
+          <button class="gender-btn selected" data-val="1">Male</button>
+          <button class="gender-btn" data-val="0">Female</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="quick-actions">
+      <span class="quick-label">Quick Select:</span>
+      <button class="quick-btn" id="select-all-btn">All Yes</button>
+      <button class="quick-btn" id="clear-all-btn">All No</button>
+      <button class="quick-btn" id="random-btn">Randomize</button>
+    </div>
+
+    <!-- Symptoms grid -->
+    <div class="symptoms-grid" id="symptoms-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="symptoms-loader" style="margin-top:24px">
+      <div class="loader-ring"></div>
+      <div class="loader-text">Analyzing symptoms...</div>
+    </div>
+
+    <!-- Predict button -->
+    <div style="margin-top:28px;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-primary" id="symptoms-predict-btn" style="padding:14px 36px;font-size:14px">
+        ⚡ Run Symptom Analysis
+      </button>
+      <span style="font-size:11px;color:var(--text-dim)">16 features · Random Forest model</span>
+    </div>
+
+    <!-- Result -->
+    <div class="symptoms-result" id="symptoms-result" style="margin-top:32px">
+      <div class="card" style="margin-bottom:16px">
+        <div class="page-tag" style="margin-bottom:16px">Symptom Analysis Result</div>
+
+        <div class="result-grid">
+          <!-- Left: verdict -->
+          <div>
+            <span id="sym-result-badge" class="result-badge">—</span>
+            <div style="margin-top:16px">
+              <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Risk Probability</div>
+              <div class="risk-pct" id="sym-prob-text" style="font-family:var(--font-display);font-weight:800;font-size:40px">—</div>
+            </div>
+            <div class="risk-meter" style="margin-top:16px">
+              <div class="risk-bar-track">
+                <div class="risk-bar-fill" id="sym-risk-bar"></div>
+              </div>
+              <div class="risk-labels"><span>0%</span><span>50%</span><span>100%</span></div>
+            </div>
+            <p style="margin-top:16px;font-size:12px;color:var(--text-secondary);line-height:1.7" id="sym-summary">—</p>
+          </div>
+
+          <!-- Right: confidence ring -->
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+            <div class="conf-ring" id="sym-conf-ring"></div>
+            <div style="font-size:11px;color:var(--text-secondary);text-align:center">Model Confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature importance -->
+      <div class="card">
+        <div class="page-tag" style="margin-bottom:4px">Feature Importance</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px">
+          SHAP values — positive (red) = increases risk · negative (green) = reduces risk
+        </div>
+        <div class="feature-chart" id="sym-feat-chart">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 3 — CLINICAL PREDICTION (Sliders)
+════════════════════════════════════════════ -->
+<div class="page" id="page-predict">
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-tag">Step 03 / Clinical Data</div>
+      <h1 class="page-title">Clinical <span>Biomarker</span><br />Prediction</h1>
+      <p class="page-desc">
+        Adjust clinical biomarkers using the sliders. The model predicts diabetes from 8 quantitative features.
+      </p>
+    </div>
+
+    <!-- Pregnancies counter -->
+    <div class="card" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="slider-name">Pregnancies</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:2px">Number of pregnancies (0–20)</div>
+        </div>
+        <div class="pregnancies-special">
+          <button class="counter-btn" id="preg-dec">−</button>
+          <div class="counter-val" id="preg-display">1</div>
+          <button class="counter-btn" id="preg-inc">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sliders grid -->
+    <div class="sliders-grid" id="sliders-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="predict-loader" style="margin-top:24px">
+      <div class="loader-ring"></div>
+      <div class="loader-text">Running clinical model...</div>
+    </div>
+
+    <!-- Predict button -->
+    <div style="margin-top:32px;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-primary" id="diabetes-predict-btn" style="padding:14px 36px;font-size:14px">
+        ⚡ Run Clinical Prediction
+      </button>
+      <span style="font-size:11px;color:var(--text-dim)">8 features · Gradient Boosting model</span>
+    </div>
+
+    <!-- Result -->
+    <div class="predict-result" id="predict-result" style="margin-top:32px">
+      <div class="card" style="margin-bottom:16px">
+        <div class="page-tag" style="margin-bottom:16px">Clinical Prediction Result</div>
+
+        <div class="result-grid">
+          <!-- Verdict -->
+          <div>
+            <span id="pred-result-badge" class="result-badge">—</span>
+            <div style="margin-top:16px">
+              <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Diabetes Risk</div>
+              <div class="risk-pct" id="pred-risk-pct" style="font-family:var(--font-display);font-weight:800;font-size:40px">—</div>
+            </div>
+            <div class="risk-meter" style="margin-top:16px">
+              <div class="risk-bar-track">
+                <div class="risk-bar-fill" id="pred-risk-bar"></div>
+              </div>
+              <div class="risk-labels"><span>Low</span><span>Moderate</span><span>High</span></div>
+            </div>
+            <p style="margin-top:16px;font-size:12px;color:var(--text-secondary);line-height:1.7" id="pred-summary">—</p>
+          </div>
+
+          <!-- Ring -->
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+            <div class="conf-ring" id="pred-conf-ring"></div>
+            <div style="font-size:11px;color:var(--text-secondary);text-align:center">Model Confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature importance -->
+      <div class="card">
+        <div class="page-tag" style="margin-bottom:4px">Feature Importance (SHAP)</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px">
+          SHAP values — positive (red) = increases risk · negative (green) = reduces risk
+        </div>
+        <div class="feature-chart" id="pred-feat-chart">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:16px;background:rgba(30,58,95,0.2);border:1px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-dim);line-height:1.8">
+        ⚠ AI predictions are decision-support tools. All results must be validated by a licensed medical professional before any clinical action is taken.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── SCRIPTS ── -->
+<script src="js/app.js"></script>
+<script src="js/login.js"></script>
+<script src="js/eye.js"></script>
+<script src="js/symptoms.js"></script>
+<script src="js/predict.js"></script>
+
+</body>
+</html>
