@@ -175,3 +175,52 @@
   font-weight: 700;
   flex-shrink: 0;
 }
+/* Remove the rectangle background and border from the container */
+.login-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  
+  /* Add these lines to ensure no box appears */
+  background: transparent !important; 
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* The Eye Container */
+.glowing-eye {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Ensure the glow isn't cut off */
+  padding: 10px; 
+}
+
+/* The Eye Shape itself */
+.eye-shape {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  border: 3px solid #00e5ff;
+  border-radius: 80% 15%; /* Modern eye curve */
+  transform: rotate(45deg);
+  /* The glow now acts as the 'halo' instead of a box */
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The Glowing Center */
+.iris {
+  width: 26px;
+  height: 26px;
+  background: #00e5ff;
+  border-radius: 50%;
+  transform: rotate(-45deg); /* Keeps it level while the eye rotates */
+  box-shadow: 0 0 15px #00e5ff, 
+              0 0 30px rgba(0, 229, 255, 0.8);
+}

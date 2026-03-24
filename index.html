@@ -60,13 +60,19 @@
 <div class="page active" id="page-login">
   <div class="login-wrap">
     <div class="login-card">
-
-      <div class="login-brand">
-        <div class="login-icon">👁️</div>
-        <div class="login-title">RetinaScan AI</div>
-        <div class="login-subtitle">Diabetic Retinopathy Diagnostic Portal</div>
-      </div>
-
+      
+        <div class="login-brand">
+          <div class="login-icon">
+            <div class="glowing-eye">
+              <div class="eye-shape">
+                <div class="iris"></div>
+              </div>
+            </div>
+          </div>
+          <div class="login-title">RetinaScan AI</div>
+          <div class="login-subtitle">Diabetic Retinopathy Diagnostic Portal</div>
+        </div>
+      
       <form id="login-form" autocomplete="off">
         <div class="form-group">
           <label class="form-label" for="doctor-name">Doctor Name</label>
@@ -97,12 +103,12 @@
         </button>
       </form>
 
-      <div class="hint-box">
+      <!-- <div class="hint-box">
         Default password for all accounts is <span style="color:var(--teal)">123</span>. Enter any doctor name to proceed.
-      </div>
+      </div> -->
 
       <div class="login-footer">
-        <span>RetinaScan v2.1</span> &nbsp;·&nbsp; Anthropic-Powered Diagnostics
+        <span>RetinaScan AI</span> &nbsp;·&nbsp; AI-Powered Diagnostics
       </div>
     </div>
   </div>
@@ -119,7 +125,7 @@
       <div class="page-tag">Step 01 / Retinal Imaging</div>
       <h1 class="page-title">Retinopathy<br /><span>Detection</span></h1>
       <p class="page-desc">
-        Upload a fundus photograph for AI-assisted diabetic retinopathy grading using ensemble deep learning.
+        Upload a fundus photograph for AI-assisted diabetic retinopathy grading using Deep Learning.
       </p>
     </div>
 
@@ -160,13 +166,13 @@
             </div>
           </div>
           <div class="model-tags">
-            <span class="model-tag">Detection Model</span>
-            <span class="model-tag">New Model</span>
-            <span class="model-tag">Split-Predict</span>
+            <span class="model-tag">Detect Retinopathy</span>
+            <span class="model-tag">Assisted Diagnostic</span>
+            <span class="model-tag">Transparency with Confidence</span>
           </div>
           <div style="display:flex;gap:10px;margin-top:auto;padding-top:16px">
             <button class="btn btn-primary" id="analyze-btn">
-              ⚡ Analyze Image
+              Analyze Image
             </button>
             <button class="btn btn-ghost" id="change-img-btn">
               Change
@@ -265,7 +271,7 @@
       <span class="quick-label">Quick Select:</span>
       <button class="quick-btn" id="select-all-btn">All Yes</button>
       <button class="quick-btn" id="clear-all-btn">All No</button>
-      <button class="quick-btn" id="random-btn">Randomize</button>
+      <!-- <button class="quick-btn" id="random-btn">Randomize</button> -->
     </div>
 
     <!-- Symptoms grid -->
@@ -282,9 +288,9 @@
     <!-- Predict button -->
     <div style="margin-top:28px;display:flex;gap:12px;align-items:center">
       <button class="btn btn-primary" id="symptoms-predict-btn" style="padding:14px 36px;font-size:14px">
-        ⚡ Run Symptom Analysis
+         Run Symptom Analysis
       </button>
-      <span style="font-size:11px;color:var(--text-dim)">16 features · Random Forest model</span>
+      <span style="font-size:11px;color:var(--text-dim)">16 features · Machine Learning Model</span>
     </div>
 
     <!-- Result -->
@@ -376,7 +382,7 @@
     <!-- Predict button -->
     <div style="margin-top:32px;display:flex;gap:12px;align-items:center">
       <button class="btn btn-primary" id="diabetes-predict-btn" style="padding:14px 36px;font-size:14px">
-        ⚡ Run Clinical Prediction
+         Run Clinical Prediction
       </button>
       <span style="font-size:11px;color:var(--text-dim)">8 features · Gradient Boosting model</span>
     </div>
